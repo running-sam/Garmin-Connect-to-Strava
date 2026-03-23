@@ -1,4 +1,4 @@
-# Strava Bulk Turbo Uploader
+# 🏃‍♂️Strava Bulk Turbo Uploader 🏃‍♂️
 
 A specialized Python utility designed to handle massive Garmin history exports (10,000+ files) by intelligently managing file priorities and Strava API rate limits.
 
@@ -47,7 +47,7 @@ To use this script, you must register your own "Application" with Strava to obta
    ```bash
    python3 strava_upload.py
 
-### 3. The OAuth Handshake
+### 🔑 The OAuth Handshake
 This is a one-time step per session to grant the script permission to write activities to your Strava account:
 
 * **Generate URL:** The script will print a long URL in your terminal. **Copy and paste it into your web browser.**
@@ -56,7 +56,7 @@ This is a one-time step per session to grant the script permission to write acti
 * **Extract:** Find the string of characters following `code=` (e.g., if the URL is `http://localhost/?state=&code=ab12345&scope=...`, your code is `ab12345`).
 * **Input:** Paste this code back into the terminal prompt and hit **Enter**.
 
-### 4. Rate Limit Management
+### 🏃‍♂️ Rate Limit Management
 Strava strictly limits API usage to 100 requests every 15 minutes and a total of 1,000–2,000 requests per day. The script handles these automatically:
 
 * **Short-term Limit:** If you hit the 15-minute cap, the script will display `Taking a 15 min nap...` and resume automatically once the window resets.
