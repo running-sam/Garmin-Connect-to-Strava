@@ -46,3 +46,19 @@ To use this script, you must register your own "Application" with Strava to obta
 2. **Run the Script:**
    ```bash
    python3 strava_upload.py
+
+### 3. The OAuth Handshake
+This is a one-time step per session to grant the script permission to write activities to your Strava account:
+
+* **Generate URL:** The script will print a long URL in your terminal. **Copy and paste it into your web browser.**
+* **Authorize:** Log in to Strava (if prompted) and click the **Authorize** button.
+* **Retrieve Code:** Your browser will redirect to a "localhost" page that will likely fail to load. **Look at the URL in your address bar.**
+* **Extract:** Find the string of characters following `code=` (e.g., if the URL is `http://localhost/?state=&code=ab12345&scope=...`, your code is `ab12345`).
+* **Input:** Paste this code back into the terminal prompt and hit **Enter**.
+
+### 4. Rate Limit Management
+Strava strictly limits API usage to 100 requests every 15 minutes and a total of 1,000–2,000 requests per day. The script handles these automatically:
+
+* **Short-term Limit:** If you hit the 15-minute cap, the script will display `Taking a 15 min nap...` and resume automatically once the window resets.
+* **Daily Limit:** If you hit your daily allowance, the script will remain in "Nap" mode. You can safely close the terminal and restart the script the following day; it will automatically skip all files already moved to the `Done` folder.
+
