@@ -1,81 +1,48 @@
-Strava Bulk Turbo Uploader
+# Strava Bulk Turbo Uploader
+
 A specialized Python utility designed to handle massive Garmin history exports (10,000+ files) by intelligently managing file priorities and Strava API rate limits.
 
-📥 Data Source
-This script is designed to process data exported using the garminexport tool.
+## 📥 Data Source
+This script is designed to process data exported using the [garminexport](https://github.com/petergardfjall/garminexport) tool. 
+* It handles the "Triple Format" export (where Garmin provides `.fit`, `.gpx`, and `.tcx` for a single activity).
+* It ignores `.json` metadata files during the upload phase to save API bandwidth and focus on GPS data.
 
-It specifically handles the "Triple Format" export (where Garmin provides .fit, .gpx, and .tcx for a single activity).
+## 🚀 Key Features
+* **Format Prioritization:** Automatically selects the highest quality data source (**`.fit`** first, then `.tcx`, then `.gpx`).
+* **Turbo-Skip Logic:** Instantly identifies and archives duplicates (0.5s delay) while slowing down for new uploads (15s delay) to stay safe.
+* **Reverse Chronological:** Processes your most recent activities (2025/2026) first so your profile updates immediately.
+* **Auto-Cleanup:** Moves processed groups to a `/Done` folder to allow for easy stopping and resuming without re-processing files.
 
-It ignores the .json metadata files during the upload phase to save API bandwidth.
+## 🛠️ Prerequisites
+1. **Python 3.x**
+2. **Stravalib:** `pip install stravalib`
+3. **Strava API Credentials:** (See the Setup guide below)
 
-🚀 Key Features
-Format Prioritization: Automatically selects the highest quality data source (.fit first, then .tcx, then .gpx).
+---
 
-Turbo-Skip Logic: Instantly identifies and archives duplicates (0.5s delay) while slowing down for new uploads (15s delay) to stay safe.
+## 🚦 How to Setup the Strava API
 
-Reverse Chronological: Processes 2026/2025 activities first so your recent profile is updated immediately.
+To use this script, you must register your own "Application" with Strava to obtain your unique keys.
 
-Auto-Cleanup: Moves processed groups to a /Done folder to allow for easy stopping and resuming.
+1. **Create the App:**
+   * Go to the [Strava Developers Settings](https://www.strava.com/settings/api).
+   * Fill out the form:
+     * **Application Name:** `My Bulk Uploader`
+     * **Category:** `Data Tools`
+     * **Website:** `http://localhost`
+     * **Authorization Callback Domain:** `localhost`
+2. **Get your Credentials:**
+   * Once created, you will see a **Client ID** and a **Client Secret**. 
+   * **Note:** Keep your Client Secret private. Do not commit it to public repositories.
+3. **Configure the Script:**
+   * Open `strava_upload.py` and paste your `CLIENT_ID`, `CLIENT_SECRET`, and the local `FOLDER` path into the configuration section.
 
-🛠️ Prerequisites
-Python 3.x
+---
 
-Stravalib: pip install stravalib
+## 💻 Usage Instructions
 
-Strava API Credentials: See the Setup guide below.
-
-🚦 How to Setup the Strava API
-To use this script, you must register your own "Application" with Strava to get your unique keys.
-
-Create the App:
-
-Go to Strava Developers - My App.
-
-Log in and fill out the form:
-
-Application Name: "My Bulk Uploader" (or anything you like).
-
-Category: "Data Tools".
-
-Website: http://localhost.
-
-Authorization Callback Domain: localhost.
-
-Get your Secret:
-
-Once created, you will see a Client ID and a Client Secret.
-
-Important: Do not share your Client Secret on GitHub!
-
-Configure the Script:
-
-Open strava_upload.py and paste your CLIENT_ID and CLIENT_SECRET into the configuration section.
-
-💻 Usage Instructions
-Prepare your Folder:
-Point the FOLDER variable in the script to your Garmin export directory (e.g., /Users/sam/activities).
-
-Run the Script:
-
-Bash
-python3 strava_upload.py
-The OAuth Handshake:
-
-The script will print a URL. Copy and paste it into your browser.
-
-Click Authorize.
-
-Your browser will redirect to a broken "localhost" page. Look at the URL bar.
-
-Find the part that says code=xxxxxxxx. Copy that code and paste it back into your terminal.
-
-Rate Limit Management:
-Strava limits you to 100 requests every 15 minutes. If you hit this, the script will automatically "nap" for 15 minutes and then resume.
-
-🧹 Post-Processing (JSON Cleanup)
-Once the script finishes (it will say "All unique activities processed!"), you will still have thousands of .json files in your main folder. Use this command to move them to your archive:
-
-Bash
-find /your-path/activities -name "*.json" -exec mv {} /your-path/activities/Done/ \;
-Pro-Tip for New Zealand Users:
-If you are running this on a MacBook, use the caffeinate command in a separate Terminal window. This prevents your Mac from sleeping and dropping the WiFi connection during the 2.5-day upload process.
+1. **Prepare your Folder:**
+   Ensure all your exported files are in the directory defined in the script.
+2. **Run the Script:**
+   ```bash
+   python3 strava_upload.py
