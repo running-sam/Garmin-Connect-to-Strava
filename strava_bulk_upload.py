@@ -10,7 +10,7 @@ from stravalib.client import Client
 # --------------------------
 CLIENT_ID = "########" #add your Client ID here
 CLIENT_SECRET = "####################" #add your Client Secret here
-FOLDER = "/Users/sam/activities"
+FOLDER = "###[update with route to folder where exports are stored]########"
 DONE_FOLDER = os.path.join(FOLDER, "Done")
 
 if not os.path.exists(DONE_FOLDER):
